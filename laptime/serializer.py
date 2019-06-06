@@ -21,12 +21,12 @@ class LapTimeSerializer(serializers.ModelSerializer):
 class ChannelSerializer(serializers.Serializer):
     channel = serializers.IntegerField(required=False, write_only=True)
     type = serializers.CharField(max_length=8,required=False, write_only=True)
-    value = serializers.DateTimeField(required=True)
+    value = serializers.IntegerField(required=True)
     datetime = serializers.DateTimeField(required=False, write_only=True)
 
 
 class PayloadSerializer(serializers.Serializer):
-    channels = ChannelSerializer()
+    channels = ChannelSerializer(many=True)
 
 
 class SensorSerializer(serializers.ModelSerializer):
@@ -46,9 +46,16 @@ class SensorSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
+        channel = validated_data['payload']['channels']
+        for value in channel:
+            if value['channel'] == 0:
+                progress_time = value['value']
+            elif value['channel'] == 1:
+                startup_time = value['value']
+
         sensor_data = SensorInput(
             module=validated_data['module'],
-            input_data=validated_data['payload']['channels']['value']
+            input_data=progress_time + startup_time,
         )
         sensor_data.save()
         return sensor_data

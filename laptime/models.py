@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.duration import duration_string
 
 
 class Car(models.Model):
@@ -13,7 +14,7 @@ class Car(models.Model):
 
 class SensorInput(models.Model):
     module = models.CharField(max_length=32)
-    input_data = models.DateTimeField(blank=True, null=True)
+    input_data = models.IntegerField(blank=True, null=True)
     car = models.ForeignKey(Car, on_delete=models.DO_NOTHING, related_name='source_car', blank=True, null=True)
 
     def __str__(self):
@@ -32,9 +33,8 @@ class LapTime(models.Model):
     car = models.ForeignKey(Car, on_delete=models.DO_NOTHING, related_name='car', blank=True, null=True)
     start_time = models.ForeignKey(SensorInput, on_delete=models.DO_NOTHING, related_name='start_time')
     end_time = models.ForeignKey(SensorInput, on_delete=models.DO_NOTHING, related_name='end_time', blank=True, null=True)
-    lap_time = models.DurationField(blank=True, null=True)
+    lap_time = models.BigIntegerField(blank=True, null=True)
     lap_status = models.CharField(max_length=4, choices=STATUS)
 
     def __str__(self):
         return str(self.lap_time)
-
