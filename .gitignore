@@ -1,4 +1,6 @@
 venv/
+laptime/__pychache__
+.idea/
 car_sample.json
 laptime_sample.json
 sakuraio.json
