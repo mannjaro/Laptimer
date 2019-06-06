@@ -9,8 +9,6 @@ class CarSerializer(serializers.ModelSerializer):
 
 
 class LapTimeSerializer(serializers.ModelSerializer):
-    start_time = serializers.StringRelatedField()
-    end_time = serializers.StringRelatedField()
     car = CarSerializer(read_only=True)
 
     class Meta:

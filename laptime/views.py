@@ -23,6 +23,6 @@ class SensorViewSets(viewsets.ModelViewSet):
 
 
 class LapTimeViewSets(viewsets.ModelViewSet):
-    queryset = LapTime.objects.all()
+    queryset = LapTime.objects.filter(lap_time__isnull=False)
     serializer_class = LapTimeSerializer
     filter_class = LapTimeFilters
