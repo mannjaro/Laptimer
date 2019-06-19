@@ -1,18 +1,13 @@
 from rest_framework import serializers
 from laptime.models import Car, SensorInput, LapTime
 
-
 class CarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
-        fields = ('car_no', 'car_name', 'team_name', 'univ_name')
+        fields = '__all__'
 
 
 class LapTimeSerializer(serializers.ModelSerializer):
-    start_time = serializers.StringRelatedField()
-    end_time = serializers.StringRelatedField()
-    car = CarSerializer(read_only=True)
-
     class Meta:
         model = LapTime
         fields = '__all__'
@@ -39,7 +34,7 @@ class SensorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SensorInput
-        fields = ('module', 'type', 'datetime', 'payload', 'in_lap', 'car', 'input_data')
+        fields = ('id','module', 'type', 'datetime', 'payload', 'in_lap', 'car', 'input_data')
         extra_kwargs = {
             'type': {'write_only': True},
             'datetime': {'write_only': True}
@@ -102,4 +97,3 @@ class SensorSerializer(serializers.ModelSerializer):
             LapTime.objects.create(**lap_time)
 
         return instance
-
